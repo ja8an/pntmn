@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "719165498468",
+    "firebase_url": "https://pntmn-65c80.firebaseio.com",
+    "project_id": "pntmn-65c80",
+    "storage_bucket": "pntmn-65c80.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:719165498468:android:e4d42754591ea6f69feb71",
+        "android_client_info": {
+          "package_name": "com.pntmn"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "719165498468-ns4er270h117rdo067g5iljhmo7qdbn7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDU3psaZf3T4OUZHjHj8UFdYf_U3vzxAV0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "719165498468-ns4er270h117rdo067g5iljhmo7qdbn7.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "719165498468-0rj24kdsguuanf3qdi1j4e8n25d8aa4d.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.pntmn"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
