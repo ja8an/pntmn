@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { View, Text, AsyncStorage, ActivityIndicator, StatusBar } from "react-native";
+import firebase, { firebaseAuth } from '../shared/firebase';
 
 interface Props {
     navigation: any
@@ -12,8 +13,7 @@ export default class AuthScreen extends Component<Props> {
     }
 
     _bootstrapAsync = async () => {
-        const userToken = await AsyncStorage.getItem('userToken');
-        this.props.navigation.navigate(userToken ? 'App' : 'Auth');
+        this.props.navigation.navigate(firebaseAuth.currentUser ? 'App' : 'Auth');
     };
 
     render() {

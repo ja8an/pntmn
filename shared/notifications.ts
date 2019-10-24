@@ -25,9 +25,11 @@ class NotificationsService {
             return;
         }
 
-        // Get the token that uniquely identifies this device
-        let token = await Notifications.getExpoPushTokenAsync();
-        console.log('userToken', token);
+        console.log(await this.getToken());
+    }
+
+    async getToken() {
+        return await Notifications.getExpoPushTokenAsync();
     }
 
     async startListening() {

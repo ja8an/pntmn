@@ -31,6 +31,17 @@ const styles = StyleSheet.create({
     },
     fillWidth: {
         minWidth: '100%'
+    },
+    redBackground: {
+        backgroundColor: '#cc1e00'
+    },
+    whiteText: {
+        color: '#FFFFFF'
+    },
+    centerView: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center'
     }
 });
 

@@ -29,3 +29,21 @@ You're about to initialize a Firebase project in this directory:
 [debug] [2019-10-23T23:14:40.796Z] >>> HTTP REQUEST GET https://firebase.googleapis.com/v1beta1/projects?pageSize=100  
  
 [debug] [2019-10-23T23:14:42.509Z] <<< HTTP RESPONSE 200
+[info] i  Using project pntmn-65c80 (PNTMN)
+[info] 
+=== Functions Setup
+[info] 
+[info] A functions directory will be created in your project with a Node.js
+[info] package pre-configured. Functions can be deployed with firebase deploy.
+[info] 
+[debug] [2019-10-23T23:15:08.892Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2019-10-23T23:15:08.896Z] > authorizing via signed-in user
+[debug] [2019-10-23T23:15:08.897Z] >>> HTTP REQUEST GET https://firebase.googleapis.com/v1beta1/projects/pntmn-65c80  
+ 
+[debug] [2019-10-23T23:15:10.134Z] <<< HTTP RESPONSE 200
+[debug] [2019-10-23T23:15:10.139Z] >>> HTTP REQUEST POST https://serviceusage.googleapis.com/v1/projects/pntmn-65c80/services/cloudfunctions.googleapis.com:enable  
+ 
+[debug] [2019-10-23T23:15:10.140Z] >>> HTTP REQUEST POST https://serviceusage.googleapis.com/v1/projects/pntmn-65c80/services/runtimeconfig.googleapis.com:enable  
+ 
+[debug] [2019-10-23T23:15:11.398Z] <<< HTTP RESPONSE 200
+[debug] [2019-10-23T23:15:11.731Z] <<< HTTP RESPONSE 200

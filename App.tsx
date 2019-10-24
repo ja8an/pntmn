@@ -8,11 +8,43 @@ import LoginScreen from './pages/login';
 import AuthScreen from './pages/auth';
 import HomeScreen from './pages/home';
 import { AppRegistry } from 'react-native';
+import CreateAccountScreen from './pages/create-account';
+import QuestionFormScreen from './pages/question-form';
+import { Services } from './shared/background-tasks';
 
-const AppStack = createStackNavigator({ Home: HomeScreen, Answers: AnswersScreen });
-const AuthStack = createStackNavigator({ Login: LoginScreen });
+const AppStack = createStackNavigator({
+  Home: {
+    screen: HomeScreen,
+    navigationOptions: {
+      header: null
+    }
+  },
+  Questions: {
+    screen: QuestionFormScreen
+  },
+  Answers: AnswersScreen
+});
 
-const App =  createAppContainer(
+const AuthStack = createStackNavigator({
+  Login: {
+    screen: LoginScreen,
+    navigationOptions: {
+      header: null
+    }
+  },
+  NewAccount: {
+    screen: CreateAccountScreen,
+    navigationOptions: {
+      headerBackTitle: 'Entrar',
+      headerTransparent: true,
+      gesturesEnabled: false
+    }
+  }
+});
+
+Services.initialize();
+
+const App = createAppContainer(
   createSwitchNavigator(
     {
       AuthLoading: AuthScreen,
