@@ -1,5 +1,5 @@
 const functions = require('firebase-functions');
-const {Expo} = require('expo-server-sdk');
+const { Expo } = require('expo-server-sdk');
 
 // The Firebase Admin SDK to access the Firebase Realtime Database.
 const admin = require('firebase-admin');
@@ -36,33 +36,38 @@ exports.handleNotifications = functions.database.ref('/questions/{pushId}')
         const questionKey = snapshot.key;
         const pushId = context.params.pushId;
 
+        const appOptions = JSON.parse(process.env.FIREBASE_CONFIG);
+        appOptions.databaseAuthVariableOverride = context.auth;
+        const app = admin.initializeApp(appOptions, 'app');
+
         console.log(Expo);
 
         // Create a new Expo SDK client
         let expo = new Expo();
         let messages = [];
-        functions.database.ref('/users').once('value', (users) => {
+
+        app.database().ref().child('users').once('value', (users) => {
             users
-            .filter(user => {
-                if (!(question.lat && question.lng && user.lat && user.lnt))
-                    return false;
-                return distance(question.lat, question.lng, user.lat, user.lng) <= 2;
-            })
-            .sort(() => 0.5 - Math.random())
-            .slice(0, 5)
-            .forEach(user => {
-                const pushToken = user.pushToken;
-                if (!Expo.isExpoPushToken(pushToken)) {
-                    console.error(`Push token ${pushToken} is not a valid Expo push token`);
-                    return;
-                }
-                messages.push({
-                    to: pushToken,
-                    sound: 'default',
-                    body: user.question,
-                    data: { qId: pushId },
+                .filter(user => {
+                    if (!(question.lat && question.lng && user.lat && user.lnt))
+                        return false;
+                    return distance(question.lat, question.lng, user.lat, user.lng) <= 2;
                 })
-            });
+                .sort(() => 0.5 - Math.random())
+                .slice(0, 5)
+                .forEach(user => {
+                    const pushToken = user.pushToken;
+                    if (!Expo.isExpoPushToken(pushToken)) {
+                        console.error(`Push token ${pushToken} is not a valid Expo push token`);
+                        return;
+                    }
+                    messages.push({
+                        to: pushToken,
+                        sound: 'default',
+                        body: user.question,
+                        data: { qId: pushId },
+                    })
+                });
         });
 
         let chunks = expo.chunkPushNotifications(messages);

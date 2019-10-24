@@ -22,7 +22,12 @@ const AppStack = createStackNavigator({
   Questions: {
     screen: QuestionFormScreen
   },
-  Answers: AnswersScreen
+  Answers: {
+    screen: AnswersScreen,
+    navigationOptions: {
+      header: null
+    }
+  }
 });
 
 const AuthStack = createStackNavigator({
