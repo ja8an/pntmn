@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { View, Text, KeyboardAvoidingView, Platform, SafeAreaView, TouchableWithoutFeedback, Keyboard, TextInput, Button } from "react-native";
 import styles from "../shared/settings";
 
-import { firebaseAuth, firebaseRef } from '../shared/firebase';
+import { firebaseAuth, firebaseRef, firebaseAnalytics } from '../shared/firebase';
 
 interface Props {
     navigation: any
@@ -49,6 +49,7 @@ export default class CreateAccountScreen extends Component<Props> {
                 this.props.navigator.navigate('Auth');
             }
         });
+        firebaseAnalytics.setCurrentScreen('create_account');
     }
 
     render() {

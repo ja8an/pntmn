@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { View, Text, TextInput, Button, KeyboardAvoidingView, Platform, SafeAreaView, TouchableWithoutFeedback, Keyboard, AsyncStorage, ActivityIndicator } from "react-native";
 import styles from "../shared/settings";
-import firebase, { firebaseAuth, firebaseRef } from '../shared/firebase';
+import firebase, { firebaseAuth, firebaseRef, firebaseAnalytics } from '../shared/firebase';
 
 interface Props {
     navigation: any
@@ -32,8 +32,11 @@ export default class LoginScreen extends Component<Props> {
 
     componentDidMount() {
         firebaseAuth.onAuthStateChanged(user => {
-            if (user)
+            if (user) {
                 this.props.navigation.navigate('App');
+                firebaseAnalytics.setUserId(user.uid, { global: true });
+                firebaseAnalytics.setCurrentScreen('login');
+            }
         });
     }
 
