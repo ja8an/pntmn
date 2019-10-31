@@ -24,6 +24,7 @@
       "**/*"
     ],
     "ios": {
+      "bundleIdentifier": "com.pntmn",
       "supportsTablet": true,
       "infoPlist": {
         "UIBackgroundModes": [
@@ -32,7 +33,8 @@
       }
     },
     "android": {
-      "googleServicesFile": "./google-services.json"
+      "googleServicesFile": "./google-services.json",
+      "package": "com.pntmn"
     },
     "description": ""
   }

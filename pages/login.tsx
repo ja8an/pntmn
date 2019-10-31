@@ -1,7 +1,8 @@
-import React, { Component } from "react";
-import { View, Text, TextInput, Button, KeyboardAvoidingView, Platform, SafeAreaView, TouchableWithoutFeedback, Keyboard, AsyncStorage, ActivityIndicator } from "react-native";
-import styles from "../shared/settings";
-import firebase, { firebaseAuth, firebaseRef, firebaseAnalytics } from '../shared/firebase';
+import React, { Component, useReducer } from "react";
+import { Button, View, Text, TextInput, KeyboardAvoidingView, Platform, SafeAreaView, TouchableWithoutFeedback, Keyboard, AsyncStorage, ActivityIndicator } from "react-native";
+import styles from "../shared/styles";
+import firebase, { firebaseAuth, firebaseRef } from '../shared/services/firebase';
+import * as U from '../shared/entities/user';
 
 interface Props {
     navigation: any
@@ -34,8 +35,6 @@ export default class LoginScreen extends Component<Props> {
         firebaseAuth.onAuthStateChanged(user => {
             if (user) {
                 this.props.navigation.navigate('App');
-                firebaseAnalytics.setUserId(user.uid, { global: true });
-                firebaseAnalytics.setCurrentScreen('login');
             }
         });
     }
@@ -54,6 +53,7 @@ export default class LoginScreen extends Component<Props> {
                     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
                         <View style={[styles.inner, styles.redBackground]}>
                             <Text style={[styles.header, styles.whiteText]}>Autenticação</Text>
+
                             <TextInput
                                 placeholder="E-mail"
                                 autoCapitalize="none"
@@ -61,7 +61,8 @@ export default class LoginScreen extends Component<Props> {
                                 autoCompleteType="email"
                                 keyboardType="email-address"
                                 onChangeText={username => this.setState({ username })}
-                                style={[styles.input, styles.fillWidth]}></TextInput>
+                                style={[styles.input, styles.fillWidth]} />
+
                             <TextInput
                                 placeholder="Password"
                                 autoCompleteType="password"
@@ -69,9 +70,11 @@ export default class LoginScreen extends Component<Props> {
                                 secureTextEntry={true}
                                 selectTextOnFocus={true}
                                 onChangeText={password => this.setState({ password })}
-                                style={[styles.input, styles.fillWidth]}></TextInput>
+                                style={[styles.input, styles.fillWidth]} />
+
                             <Button title="Entrar" color="#FFFFFF" onPress={() => this._login()} disabled={!this.valid()} />
                             <Button title="Criar conta" color="#FFFFFF" onPress={() => this._createAccount()} />
+
                             <View style={{ flex: 1 }} />
                         </View>
                     </TouchableWithoutFeedback>

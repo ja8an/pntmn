@@ -1,9 +1,9 @@
 import React, { Component } from "react";
-import { KeyboardAvoidingView, Platform, TouchableWithoutFeedback, Keyboard, View, TextInput, Text, Button } from "react-native";
+import { KeyboardAvoidingView, Platform, TouchableWithoutFeedback, Keyboard, View, TextInput, Text, Button, ActivityIndicator } from "react-native";
 import { SafeAreaView } from "react-navigation";
-import styles from "../shared/settings";
-import firebase, { firebaseRef } from '../shared/firebase';
-import { Geolocation } from "../shared/geolocation";
+import styles from "../shared/styles";
+import firebase, { firebaseRef, firebaseAuth } from '../shared/services/firebase';
+import { Geolocation } from "../shared/services/geolocation";
 
 interface Props {
     navigation?: any,
@@ -13,7 +13,8 @@ interface Props {
 export default class QuestionFormScreen extends Component<Props> {
 
     state = {
-        text: ''
+        text: '',
+        loading: false
     };
 
     valid() {
@@ -22,6 +23,8 @@ export default class QuestionFormScreen extends Component<Props> {
 
     async _sendQuestion() {
 
+        this.setState({ loading: true });
+
         const loc = await Geolocation._getLocationAsync();
 
         const response = await firebaseRef.child('/questions').push({
@@ -29,14 +32,25 @@ export default class QuestionFormScreen extends Component<Props> {
             answers: [],
             lat: loc.coords.latitude,
             lng: loc.coords.longitude,
+            uid: firebaseAuth.currentUser.uid,
+            type: 'TEXT'
         });
-        this.setState({ text: '' });
+
         this.props.navigation.navigate('Answers', {
             qId: response.key
         });
+
+        this.setState({ loading: false, text: '' });
     }
 
     render() {
+        if (this.state.loading) {
+            return (
+                <View style={styles.centerView}>
+                    <ActivityIndicator size='large'></ActivityIndicator>
+                </View>
+            );
+        }
         return (
             <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : null} style={{ flex: 1 }}>
                 <SafeAreaView style={styles.container}>

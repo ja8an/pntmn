@@ -1,11 +1,12 @@
 import React, { Component } from "react";
 import { View, Text, TextInput, Button, KeyboardAvoidingView, TouchableWithoutFeedback, Keyboard, SafeAreaView, Platform, AsyncStorage } from "react-native";
 
-import styles from "../shared/settings";
+import styles from "../shared/styles";
 
-import firebase, { firebaseRef } from '../shared/firebase';
-import Notifier from "../shared/notifications";
+import firebase, { firebaseRef } from '../shared/services/firebase';
+import Notifier from "../shared/services/notifications";
 import QuestionFormScreen from "./question-form";
+import { Geolocation } from "../shared/services/geolocation";
 
 
 
@@ -26,9 +27,10 @@ export default class HomeScreen extends Component<Props> {
     }
 
     componentDidMount() {
-
         Notifier.registerForPushNotificationsAsync();
-        
+        Geolocation.watchPosition((coords) => {
+            console.log('coordinates', coords);
+        });
     }
 
     openModal() {

@@ -16,16 +16,30 @@ class GeolocationService {
         }
     }
 
-    _getLocationAsync = async () => {
+    private async checkGranted() {
         let { status } = await Permissions.askAsync(Permissions.LOCATION);
         if (status !== 'granted') {
             return;
         }
+    }
 
+    _getLocationAsync = async () => {
+        if (!this.checkGranted())
+            return;
         return await Location.getCurrentPositionAsync({
             enableHighAccuracy: true
         });
     };
+
+    async watchPosition(fn) {
+        if (!this.checkGranted())
+            return;
+        return Location.watchPositionAsync({
+            enableHighAccuracy: true,
+            accuracy: Location.Accuracy.Highest,
+            // timeInterval: 1000
+        }, fn);
+    }
 
 }
 

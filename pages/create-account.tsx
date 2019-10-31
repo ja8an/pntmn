@@ -1,8 +1,9 @@
 import React, { Component } from "react";
 import { View, Text, KeyboardAvoidingView, Platform, SafeAreaView, TouchableWithoutFeedback, Keyboard, TextInput, Button } from "react-native";
-import styles from "../shared/settings";
+import styles from "../shared/styles";
 
-import { firebaseAuth, firebaseRef, firebaseAnalytics } from '../shared/firebase';
+import { firebaseAuth, firebaseRef } from '../shared/services/firebase';
+import { Geolocation } from "../shared/services/geolocation";
 
 interface Props {
     navigation: any
@@ -17,16 +18,20 @@ export default class CreateAccountScreen extends Component<Props> {
         confirmPassword: ''
     }
 
-    _createAccount() {
+    private _createAccount() {
         if (!this.valid())
             return;
+
+        console.info(this.state);
+
         firebaseAuth.createUserWithEmailAndPassword(this.state.email, this.state.password)
-            .then(response => {
+            .then(async response => {
+                const loc = await Geolocation._getLocationAsync();
                 const user = {
                     uid: response.user.uid,
-                    lat: null,
-                    lng: null,
-                    lastUpdate: null
+                    lat: loc.coords.latitude,
+                    lng: loc.coords.longitude,
+                    lastUpdate: loc.timestamp
                 };
                 firebaseRef.child('users').push(user);
             })
@@ -35,7 +40,7 @@ export default class CreateAccountScreen extends Component<Props> {
             });
     }
 
-    valid() {
+    private valid() {
         if (!(this.state.name || this.state.email || this.state.password))
             return false;
         if (this.state.password.length < 6 || this.state.password != this.state.confirmPassword)
@@ -46,10 +51,9 @@ export default class CreateAccountScreen extends Component<Props> {
     componentDidMount() {
         firebaseAuth.onAuthStateChanged(user => {
             if (user) {
-                this.props.navigator.navigate('Auth');
+                this.props.navigation.navigate('Auth');
             }
         });
-        firebaseAnalytics.setCurrentScreen('create_account');
     }
 
     render() {
@@ -66,12 +70,14 @@ export default class CreateAccountScreen extends Component<Props> {
                                 style={[styles.input, styles.fillWidth]}
                                 autoCompleteType="name"
                                 autoCapitalize="words"
+                                value={this.state.name}
                                 textContentType="name" />
                             <TextInput
                                 placeholder="E-mail"
                                 onChangeText={email => this.setState({ email })}
                                 style={[styles.input, styles.fillWidth]}
                                 autoCapitalize="none"
+                                value={this.state.email}
                                 autoCompleteType="email"
                                 textContentType="emailAddress"
                                 keyboardType="email-address" />
@@ -80,12 +86,14 @@ export default class CreateAccountScreen extends Component<Props> {
                                 secureTextEntry={true}
                                 onChangeText={password => this.setState({ password })}
                                 style={[styles.input, styles.fillWidth]}
+                                value={this.state.password}
                                 autoCompleteType="password"
                                 textContentType="password" />
                             <TextInput
                                 placeholder="Confirme a senha"
                                 secureTextEntry={true}
                                 onChangeText={confirmPassword => this.setState({ confirmPassword })}
+                                value={this.state.confirmPassword}
                                 style={[styles.input, styles.fillWidth]}
                                 autoCompleteType="password"
                                 textContentType="newPassword" />

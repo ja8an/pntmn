@@ -10,7 +10,7 @@ import HomeScreen from './pages/home';
 import { AppRegistry } from 'react-native';
 import CreateAccountScreen from './pages/create-account';
 import QuestionFormScreen from './pages/question-form';
-import { Services } from './shared/background-tasks';
+import { Services } from './shared/services/background-tasks';
 
 const AppStack = createStackNavigator({
   Home: {
